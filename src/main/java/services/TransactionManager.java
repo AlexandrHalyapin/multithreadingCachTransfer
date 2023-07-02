@@ -32,9 +32,14 @@ public class TransactionManager {
 
         // Генерируем случайную сумму для транзакции
         int amount = random.nextInt(1000);
+//        int amount = random.nextInt(1000);
 
         // Создаем объект транзакции
         Transaction transaction = new Transaction(sender, receiver, amount);
+
+        if (amount < 0) {
+            throw new IllegalArgumentException("Сумма перевода не может быть отрицательной.");
+        }
 
         // Проверяем достаточно ли средств на счете отправителя
         if (sender.getMoney() >= amount) {
@@ -60,6 +65,8 @@ public class TransactionManager {
             // Записываем ошибку в лог, если недостаточно средств на счете отправителя
             String errorMessage = String.format("Ошибка транзакции: Недостаточно средств на счете отправителя: %s", sender.getId());
             logger.error(errorMessage);
+
+            throw new IllegalArgumentException("Ошибка транзакции: Недостаточно средств на счете отправителя: " + sender.getId());
         }
     }
 
